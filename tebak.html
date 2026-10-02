@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3/4 - Tebak-tebakan 🤭</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {margin:0; padding:0; box-sizing:border-box;}
+        body {
+            background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 50%,#fad0c4 100%);
+            min-height:100vh; padding:20px; font-family:'Quicksand', sans-serif;
+            overflow-x:hidden;
+        }
+        .container {
+            max-width:800px; margin:0 auto; background:rgba(255,255,255,0.92);
+            border-radius:24px; padding:35px; box-shadow:0 12px 35px rgba(214,51,108,0.15);
+        }
+        .urutan {text-align:center; color:#b02a58; font-weight:500; margin-bottom:25px; font-size:16px; letter-spacing:1px;}
+        h2 {text-align:center; margin-bottom:30px; color:#d6336c; font-family:'Great Vibes', cursive; font-size:36px; font-weight:normal;}
+        .kotak {background:rgba(255,240,245,0.8); border-radius:20px; padding:30px; margin:25px 0; text-align:center; border:1px solid rgba(255,179,193,0.5);}
+        p {font-size:19px; color:#7a3b64; font-weight:500; line-height:1.8;}
+        button {padding:12px 25px; margin:8px; border-radius:50px; background:linear-gradient(135deg,#ff6b81,#ff4757); color:white; border:none; cursor:pointer; font-weight:600; transition:0.2s ease; font-family:'Quicksand', sans-serif; font-size:16px;}
+        button:active {transform:scale(0.95);}
+        #jawab {margin-top:18px; font-weight:600; color:#c2255c; display:none; font-size:18px;}
+        .tombol-bawah {display:flex; justify-content:center; margin-top:35px;}
+        .hati {position:fixed; font-size:22px; color:#ff4757; animation:jatuh 5s linear infinite; pointer-events:none; opacity:0.7;}
+        @keyframes jatuh {0%{transform:translateY(-10px) rotate(0deg); opacity:0.7;} 100%{transform:translateY(100vh) rotate(360deg); opacity:0;}}
+        .emoji-efek {
+            position:fixed; font-size:24px; pointer-events:none; z-index:999;
+            animation:melayang 1.2s ease-out forwards;
+        }
+        @keyframes melayang {
+            0% {opacity:1; transform:translate(0,0) scale(0.5);}
+            50% {opacity:1; transform:translate(var(--tx),var(--ty)) scale(1.2);}
+            100% {opacity:0; transform:translate(var(--tx),calc(var(--ty) - 50px)) scale(0.8) rotate(360deg);}
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="urutan">Langkah 3 dari 4</div>
+    <h2>Tebak-tebakan Kecil-kecilan 🤭</h2>
+
+    <div class="kotak">
+        <p id="soal">Pertanyaan: Hewan apa yang paling pintar menyembunyikan perasaan suka?</p>
+        <br>
+        <button onclick="munculEfek(event); document.getElementById('jawab').style.display='block'">Lihat Jawaban</button>
+        <div id="jawab">Jawabannya: Kupu-kupu... karena dia menyembunyikan rasanya di dalam kepompong ❤️</div>
+        <br><br>
+        <button onclick="munculEfek(event); gantiSoal()">Soal Lainnya</button>
+    </div>
+
+    <div class="tombol-bawah">
+        <button onclick="munculEfek(event); setTimeout(()=>window.location.href='pesan.html', 1000)">Lanjut →</button>
+    </div>
+</div>
+
+<script>
+const emojiBagus = ['💖','✨','🥰','💫','🌸','💝','🎀','🦋','🌷','🧸','💌','🍓','🎈','🎊','💗','💓','💞','🌺','🐇','☁️'];
+
+function munculEfek(e){
+    let rect = e.target.getBoundingClientRect();
+    let xPusat = rect.left + rect.width/2;
+    let yPusat = rect.top + rect.height/2;
+    
+    for(let i=0; i<22; i++){
+        let em = document.createElement('div');
+        em.classList.add('emoji-efek');
+        em.textContent = emojiBagus[Math.floor(Math.random()*emojiBagus.length)];
+        em.style.left = xPusat + 'px';
+        em.style.top = yPusat + 'px';
+        let tx = (Math.random()-0.5)*250;
+        let ty = (Math.random()-0.5)*250;
+        em.style.setProperty('--tx', tx+'px');
+        em.style.setProperty('--ty', ty+'px');
+        document.body.appendChild(em);
+        setTimeout(()=>em.remove(), 1200);
+    }
+}
+
+let daftar=[
+    {s:"Benda apa yang makin lama makin hangat kalau dipegang sama kamu?", j:"Tanganku dong sayang, apalagi kalau sudah digandeng erat sama kamu 🤗"},
+    {s:"Apa bedanya kamu sama jam dinding?", j:"Kalau jam berputar terus, kalau kamu cuma berputar di hatiku saja selamanya 💖"},
+    {s:"Tahu nggak bedanya kamu sama peta dunia?", j:"Kalau peta isinya tempat-tempat, kalau kamu isinya seluruh duniaku yang paling berharga 😍"}
+], urut=0;
+function gantiSoal(){
+    urut++; if(urut>=daftar.length) urut=0;
+    document.getElementById('soal').textContent="Pertanyaan: "+daftar[urut].s;
+    document.getElementById('jawab').style.display="none";
+}
+
+setInterval(()=>{let h=document.createElement("div"); h.classList.add("hati"); h.textContent="❤️"; h.style.left=Math.random()*100+"vw"; document.body.appendChild(h); setTimeout(()=>h.remove(),7000);},800);
+</script>
+</body>
+</html>
